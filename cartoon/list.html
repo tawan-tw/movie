@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mobile Movie App Menu</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <nav class="navbar">
+    <div class="logo">MovieApp</div>
+    <div class="menu-toggle" id="mobile-menu">
+      <span class="bar"></span>
+      <span class="bar"></span>
+      <span class="bar"></span>
+    </div>
+    <ul class="menu">
+      <li><a href="#home">Home</a></li>
+      <li class="dropdown">
+        <a href="#movies" class="dropbtn">Movies</a>
+        <ul class="dropdown-content">
+          <li><a href="#action">Action</a></li>
+          <li><a href="#comedy">Comedy</a></li>
+          <li><a href="#drama">Drama</a></li>
+          <li><a href="#sci-fi">Sci-Fi</a></li>
+        </ul>
+      </li>
+      <li><a href="#search">Search</a></li>
+      <li><a href="#account">My Account</a></li>
+      <li><a href="#subscription">Subscription</a></li>
+    </ul>
+  </nav>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+  const mobileMenu = document.getElementById('mobile-menu');
+  const menu = document.querySelector('.menu');
+  const dropdown = document.querySelector('.dropdown');
+
+  // Toggle mobile menu visibility
+  mobileMenu.addEventListener('click', () => {
+    menu.classList.toggle('active');
+  });
+
+  // Toggle dropdown inside mobile menu
+  dropdown.addEventListener('click', (e) => {
+    // Prevent navigating away when tapping the Movies link
+    e.preventDefault();
+    dropdown.classList.toggle('active');
+    const dropdownContent = dropdown.querySelector('.dropdown-content');
+    dropdownContent.style.display =
+      dropdownContent.style.display === 'flex' ? 'none' : 'flex';
+  });
+});
+
+  </script>
+</body>
+<style>
+    /* Basic Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+}
+
+/* Navbar Styling */
+.navbar {
+  background-color: #333;
+  color: #fff;
+  padding: 15px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+}
+
+.logo {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+/* Hamburger Menu Icon */
+.menu-toggle {
+  display: none;
+  flex-direction: column;
+  cursor: pointer;
+}
+
+.menu-toggle .bar {
+  height: 3px;
+  width: 25px;
+  background-color: #fff;
+  margin: 4px 0;
+  transition: 0.4s;
+}
+
+/* Main Menu */
+.menu {
+  list-style: none;
+  display: flex;
+  gap: 20px;
+}
+
+/* Mobile Menu hidden by default */
+.menu li {
+  position: relative;
+}
+
+.menu a {
+  color: #fff;
+  text-decoration: none;
+  padding: 8px 16px;
+  display: block;
+  transition: background-color 0.3s;
+}
+
+.menu a:hover {
+  background-color: #555;
+  border-radius: 4px;
+}
+
+/* Dropdown Menu */
+.dropdown-content {
+  display: none;
+  flex-direction: column;
+  background-color: #444;
+  position: static;
+  margin-top: 5px;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.dropdown-content li a {
+  padding: 10px 16px;
+  border-bottom: 1px solid #555;
+}
+
+.dropdown-content li a:last-child {
+  border-bottom: none;
+}
+
+/* Mobile Styles */
+@media (max-width: 768px) {
+  .menu-toggle {
+    display: flex;
+  }
+  
+  .menu {
+    flex-direction: column;
+    width: 100%;
+    display: none;
+    background-color: #333;
+    position: absolute;
+    top: 60px;
+    left: 0;
+  }
+  
+  .menu.active {
+    display: flex;
+  }
+  
+  .menu li {
+    width: 100%;
+  }
+  
+  .dropdown-content {
+    background-color: #555;
+  }
+  
+  .dropdown .dropbtn::after {
+    content: '\25BC'; /* Down arrow */
+    float: right;
+    margin-right: 10px;
+    transition: transform 0.3s;
+  }
+  
+  .dropdown.active .dropbtn::after {
+    transform: rotate(-180deg);
+  }
+}
+
+</style>
+</html>
