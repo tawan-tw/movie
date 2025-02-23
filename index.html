@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie+ App</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <script defer src="script.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            color: black;
+            margin: 0;
+            padding: 0;
+        }
+        .header {
+            background-color: white;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .search-bar {
+            width: 80%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .search-results {
+            position: absolute;
+            background: white;
+            width: 80%;
+            max-height: 200px;
+            overflow-y: auto;
+            border: 1px solid #ccc;
+            display: none;
+            margin-top: 50%;
+        }
+        .search-item {
+            display: flex;
+            align-items: center;
+            padding: 5px;
+            cursor: pointer;
+        }
+        .search-item img {
+            width: 50px;
+            height: 50px;
+            margin-right: 10px;
+        }
+        .categories {
+            display: flex;
+            justify-content: space-around;
+            padding: 10px;
+            background-color: white;
+            border-bottom: 1px solid #ddd;
+        }
+        .categories span {
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .movie-section {
+            padding: 10px;
+        }
+        .movie-list {
+            display: flex;
+            overflow-x: scroll;
+            padding: 10px;
+        }
+        .movie-item {
+            margin: 10px;
+            text-align: center;
+            cursor: pointer;
+        }
+        .movie-item img {
+            width: 120px;
+            border-radius: 10px;
+        }
+        .movie-details {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+        .movie-details img {
+            width: 200px;
+            border-radius: 10px;
+        }
+        .download {
+            background-color: #4CAF50;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            color: white;
+            font-size: 16px;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+        .card-rating {
+      color: #ff9900;
+    }
+        /* Navbar Styling */
+.navbar {
+  background-color: #333;
+  color: #fff;
+  padding: 15px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+}
+
+.logo {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+/* Hamburger Menu Icon */
+.menu-toggle {
+  display: none;
+  flex-direction: column;
+  cursor: pointer;
+}
+
+.menu-toggle .bar {
+  height: 3px;
+  width: 25px;
+  background-color: #fff;
+  margin: 4px 0;
+  transition: 0.4s;
+}
+
+/* Main Menu */
+.menu {
+  list-style: none;
+  display: flex;
+  gap: 20px;
+}
+
+/* Mobile Menu hidden by default */
+.menu li {
+  position: relative;
+}
+
+.menu a {
+  color: #fff;
+  text-decoration: none;
+  padding: 8px 16px;
+  display: block;
+  transition: background-color 0.3s;
+}
+
+.menu a:hover {
+  background-color: #555;
+  border-radius: 4px;
+}
+
+/* Dropdown Menu */
+.dropdown-content {
+  display: none;
+  flex-direction: column;
+  background-color: #444;
+  position: static;
+  margin-top: 5px;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.dropdown-content li a {
+  padding: 10px 16px;
+  border-bottom: 1px solid #555;
+}
+
+.dropdown-content li a:last-child {
+  border-bottom: none;
+}
+
+/* Mobile Styles */
+@media (max-width: 768px) {
+  .menu-toggle {
+    display: flex;
+  }
+  
+  .menu {
+    flex-direction: column;
+    width: 100%;
+    display: none;
+    background-color: #333;
+    position: absolute;
+    top: 60px;
+    left: 0;
+  }
+  
+  .menu.active {
+    display: flex;
+  }
+  
+  .menu li {
+    width: 100%;
+  }
+  
+  .dropdown-content {
+    background-color: #555;
+  }
+  
+  .dropdown .dropbtn::after {
+    content: '\25BC'; /* Down arrow */
+    float: right;
+    margin-right: 10px;
+    transition: transform 0.3s;
+  }
+  
+  .dropdown.active .dropbtn::after {
+    transform: rotate(-180deg);
+  }
+}
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">MovieApp</div>
+        <div class="menu-toggle" id="mobile-menu">
+          <span class="bar"></span>
+          <span class="bar"></span>
+          <span class="bar"></span>
+        </div>
+        <ul class="menu">
+          <li><a href="design.html">Home</a></li>
+          <li><a href="cartoon.html">cartoon</a></li>
+
+          
+          <li><a href="#account">My Account</a></li>
+          <li><a href="#subscription">Subscription</a></li>
+        </ul>
+      </nav>
+
+    <div class="header">
+        <input type="text" class="search-bar" placeholder="Search Movie..." onkeyup="searchMovies()">
+        <div class="search-results" id="search-results"></div>
+    </div>
+   
+    
+    <div class="movie-section">
+        <h3>Top Picks</h3>
+        <div class="movie-list">
+            <div class="movie-item" onclick="showMovieDetails('Dances With Wolves')">
+                <img src="photo/Dances With Wolves.jpg" alt="Dances With Wolves">
+                <p>Dances With Wolves</p>
+                <div class="card-rating">7.3</div>
+
+            </div>
+            <div class="movie-item" onclick="showMovieDetails('Divine Fury')">
+                <img src="photo/Divine Fury.jpg" alt="Divine Fury">
+                <p>Divine Fury</p>
+                <div class="card-rating">5.3</div>
+
+            </div>
+            <div class="movie-item" onclick="showMovieDetails('Easy Money ( 2023 )')">
+                <img src="photo/Easy Money ( 2023 ).jpg" alt="Easy Money ( 2023 )">
+                <p>Easy Money (2023)</p>
+                <div class="card-rating">6.3</div>
+
+            </div>
+            <div class="movie-item" onclick="showMovieDetails('Legend Of Ravaging Dynasties 2')">
+                <img src="photo/Legend Of Ravaging Dynasties 2.jpg" alt="Legend Of Ravaging Dynasties 2">
+                <p>Legend Of Ravaging Dynasties 2</p>
+                <div class="card-rating">8.0</div>
+
+            </div>
+            <div class="movie-item" onclick="showMovieDetails('Monk Comes Down The Mountain (2015)')">
+                <img src="photo/Monk Comes Down The Mountain (2015).jpg" alt="Monk Comes Down The Mountain (2015)">
+                <p>Monk Comes Down The Mountain (2015)</p>
+                <div class="card-rating">6.3</div>
+
+            </div>
+            
+            <div class="movie-item" onclick="showMovieDetails('Signal The Movie 2021')">
+                <img src="photo/Signal The Movie 2021.jpg" alt="Signal The Movie 2021">
+                <p>Signal The Movie 2021</p>
+                <div class="card-rating">7.1</div>
+
+            </div>
+            
+            <div class="movie-item" onclick="showMovieDetails('The Curse of Turandot')">
+                <img src="photo/The Curse of Turandot.jpg" alt="The Curse of Turandot">
+                <p>The Curse of Turandot</p>
+                <div class="card-rating">3.2</div>
+
+            </div>
+            <div class="movie-item" onclick="showMovieDetails('The Water Flows to the Sea (2023)')">
+                <img src="photo/The Water Flows to the Sea (2023).jpg" alt="The Water Flows to the Sea (2023)">
+                <p>The Water Flows to the Sea (2023)</p>
+                <div class="card-rating">6.3</div>
+
+            </div>
+            <div class="movie-item" onclick="showMovieDetails('Vasantha Mullai [2023]')">
+                <img src="photo/Vasantha Mullai [2023].jpg" alt="Vasantha Mullai [2023]">
+                <p>Vasantha Mullai [2023]</p>
+                <div class="card-rating">6.3</div>
+
+            </div>
+            <div class="movie-item" onclick="showMovieDetails('You Are Deep In My Heart (2018)')">
+                <img src="photo/You Are Deep In My Heart (2018).jpg" alt="You Are Deep In My Heart (2018)">
+                <p>Divine Fury</p>
+                <div class="card-rating">2.3</div>
+
+            </div>
+            
+        </div>
+    </div>
+    
+    <div class="movie-details" id="movieDetails">
+        <div>
+            <img id="movie-image" src="" alt="Movie Image">
+            <h2 id="movie-title"></h2>
+            <p id="movie-genre"></p>
+            <p id="movie-description"></p>
+            <button onclick="hideMovieDetails()" style="background-color: red;border-radius: 20px;" >&larr; Back</button>
+
+            <a id="download-link" class="download" href="#" download>Download</a>
+
+        </div>
+    </div>
+    
+    <script>
+        const movies = {
+            'Dances With Wolves': {
+                title: 'Dances With Wolves',
+                genre: 'Action, Thriller',
+                description: 'It is a 1990 Adventure, Drama, Western film that won 7 Oscars and 44 film awards.An officer named John Banda goes to a border area where a civil war is raging.When he arrives there, he encounters a situation where there are no people or animals.Since he has been assigned to the mission, John does not look back and stays with him, a horse, and food.John Bandas encounters with wild animals that are dangerous to humans in that area,and the wild animals that do not speak a different language,and become friends with them while adapting to them so that they do not harm him.Dances With Wolves, which Kevin Costner himself has shown his talent as both a leading actor and a director,is a must-watch for almost 4 hours as if it were a Director Cut Version',
+                file: 'spiderman.mp4',
+                image: 'photo/Dances With Wolves.jpg'
+            },
+            'Divine Fury': {
+                title: 'Divine Fury',
+                genre: 'Action, Sci-Fi',
+                description: ' မကောင်းဆိုးဝါးနှိမ်နင်းရေးကားပါဒီဇာတ်ကားလေးကတော့ Horror Action ဇာတ်ကားလေးဖြစ်ပါတယ် တခြားကားတွေနဲ့မတူဒါက Horror ကို Action နဲ့ပေါင်းပြီး ဖန်တီးထားတာမိုအရသာနှစ်မျိုးပေးစွမ်းနိုင်မှာဖြစ်တဲ့ ဇာတ်ကားကောင်းလေးပါ ဒီကားဟာ နာမည်ကြီးအတွင်းရေးမှုးကင်မ်ကားနဲ့ လူတွေသိကြတဲ့Park Soe John ရဲ့ထပ်မံပြီးတော့ သဲသဲလှုပ် ဝန်းရံခံခဲ့ရတဲ့ကားပါ.',
+                file: 'avengers.mp4',
+                image: 'photo/Divine Fury.jpg'
+            },
+            'Easy Money ( 2023 )': {
+                title: 'Easy Money ( 2023 )',
+                genre: 'Drama, Crime',
+                description: 'ငွေတုငွေစစ်အရှုပ်တော်ပုံ ဟာသကားလေးတင်ဆက်ပေးလိုက်ပါတယ်။ဇာတ်လမ်းအကျဉ်းလေးကတော့အခြေခံလူတန်းစားတစ်ယောက်ဖြစ်တဲ့ ချောင်ရှီချင့်ဟာ တစ်နေကုန်ကံဆိုးနေခဲ့ပါတယ်။စိတ်ညစ်ညစ်နဲ့တံတားအောက်ကိုသွားတဲ့အချိန်မှာပိုက်ဆံသေတ္တာတစ်ခုကိုကောက်တွေ့ရပါတယ်။သူကဒီပိုက်ဆံသေတ္တာကိုရဲလက်အပ်ရမလား ဘာလုပ်ရမလဲတွေဝေနေတဲ့အချိန်မှာလင်ကြီးဆီကပိုက်ဆံတွေကိုခိုးပြီး ပိုက်ဆံအတုနဲ့လဲဖိုကြိုးစားနေတဲ့စုံတွဲတစ်တွဲနဲ့မထင်မှတ်ပဲ လက်ဆွဲသေတ္တာချင်လွဲသွားခဲ့တယ်။တကယ်တော့ ချောင်ရှီချင့်လက်ထဲကပိုက်ဆံသေတ္တာကရိုက်ကူးရေးသုံးတဲ့ပိုက်ဆံအတုတွေပါ။ခိုးလာတဲ့ပိုက်ဆံကအတုတွေဖြစ်သွားတော့ စုံတွဲကခေါင်းမီးတောက်တော့တာပဲ။ဒီလိုနဲ့ ချောင်ရှီချင့်ကငွေတုဆိုပြီးရဲလက်ကိုအပ်ဖိုကြိုးစားတဲ့ပိုက်ဆံတွေနဲ့ရွာလည်နေတော့တာပါပဲ။ပေါ့ပေါ့ပါးပါး စိတ်အပန်းဖြေချင်တဲ့အခါမှာသေချာပေါက်ကြည့်သင့်တဲ့ အခွီကားလေးတစ်ကားပါပဲ။',
+                file: 'lucifer.mp4',
+                image: 'photo/Easy Money ( 2023 ).jpg'
+            },
+            'Legend Of Ravaging Dynasties 2': {
+                title: 'Legend Of Ravaging Dynasties 2',
+                genre: 'Action, Thriller',
+                description: 'Peter Parker fights crime in New York City.',
+                file: 'spiderman.mp4',
+                image: 'photo/Legend Of Ravaging Dynasties 2.jpg'
+            },
+            'Monk Comes Down The Mountain (2015)': {
+                title: 'Monk Comes Down The Mountain (2015)',
+                genre: 'Action, Sci-Fi',
+                description: 'Earth’s mightiest heroes assemble to fight threats.',
+                file: 'avengers.mp4',
+                image: 'photo/Monk Comes Down The Mountain (2015).jpg'
+            },
+            'Signal The Movie 2021': {
+                title: 'Signal The Movie 2021',
+                genre: 'Drama, Crime',
+                description: 'The story begins with the silent assassins killing their leader, Sakuragi"s disciple Segusa who joined the Oyami group to find the killer who killed their leader However Oyami also ran away from the killers and disappeared So Segusa investigates why the killers are after Oyami He learns that the killers are not other people but the ones ordered by their superiors Did Oyami kill them knowingly? Will detective Segusa be able to uncover the secret behind the superiors Will Oyami ever reappear and expose the evil deeds of the superiors Lets watch this great movie without missing a beat.',
+                file: 'lucifer.mp4',
+                image: 'photo/Signal The Movie 2021.jpg'
+            },
+            'The Curse of Turandot': {
+                title: 'The Curse of Turandot',
+                genre: 'Action, Thriller',
+                description: 'Princess Thulanthaw was given many gifts by her father the King including three strange bracelets on her birthday However, due to the invisible powers contained in the three bracelets, the princess could no longer distinguish colors and began to behave strangelyIf she could not solve the three riddles of the bracelets before she turned 18 she would be considered a demon and would be sentenced to deathSo the King announced to the entire nation that the one who could solve the riddles for his daughter would marry the princess Meanwhil the blue-eyed Prince Kharafoo fell in love with Princess Thulanthaw"s beauty and set out to solve her problems Based on a fairy tale this is a must-see film for those who like supernatural powers and good fantasy romance movies.',
+                file: 'spiderman.mp4',
+                image: 'photo/The Curse of Turandot.jpg'
+            },
+            'The Water Flows to the Sea (2023)': {
+                title: 'The Water Flows to the Sea (2023)',
+                genre: 'Action, Sci-Fi',
+                description: 'A high school student named Naotasu has to live with his uncle because he has to go to school far from home The story begins when Naotasu arrives at the nearest station to his uncle"s house on a rainy day and is met by an adult woman named Sakaki Naotasu uncle actually lives in a shared house so Naotasu has to live with other people. Sakaki is a 26-year-old woman and Naotasu uncle Shigemichi has quit his regular job to try to become a cartoonist without his parents knowing Their other roommates, Naruse, is a university professor traveling the world, and Izumiya is a fortune teller who dresses in women"s clothing. While living with them Naotasu falls in love with Sakaki but When the past events that made them not want to be in love resurface',
+                file: 'avengers.mp4',
+                image: 'photo/The Water Flows to the Sea (2023).jpg'
+            },
+            'Vasantha Mullai [2023]': {
+                title: 'Vasantha Mullai [2023]',
+                genre: 'Drama, Crime',
+                description: 'ဒီတစ်ခေါက်တင်ဆက်ပေးမှာကတော့ ထူးဆန်းတဲ့ဟိုတယ်ထဲမှာပိတ်မိနေပြီး လွတ်လမ်းရှာရမဲ့Psychologicial Thriller Actionဇာတ်ကားဖြစ်တဲ့ Vasantha Mullaiပဲဖြစ်ပါတယ်ရူဒရာ ဆိုတဲ့အိုင်တီကုမ္ပဏီတစ်ခုမှာ အလုပ်လုပ်နေတဲ့ဝန်ထမ်းတစ်ယောက်က နေ့တိုင်းမအိပ်ဘဲအလုပ်ချည်းဖိလုပ်နေလွန်းလိုမကြာခဏသတိလစ်တတ်တဲ့ အလုပ်ရူးတစ်ယောက်ဖြစ်ပါတယ်သူဒီလိုကြိုးစားနေရတဲ့အကြောင်းကလည်း သူချစ်ရတဲ့နီလာဆိုတဲ့မိန်းကလေးကိုမကြောင့်မကြရွှေပေါ်မြတင်ထားနိုင်ဖိုပါပဲဒါပေမဲ့ ဒီလိုအလုပ်ကြိုးစားပြီးအိပ်ရေးပျက်ရတဲ့ရလဒ်အနေနဲ့ကျန်းမာရေးမကောင်းဖြစ်လာတော့ အားလပ်ရက်ယူတဲ့အနေနဲ့နီလာနဲ့အတူခရီးထွက်ခဲ့ကြတယ် လမ်းမှာထူးဆန်းတာတွေကြုံခဲ့ပေမဲ့ သတိမထားမိခဲ့ကြတဲ့သူတို ထူးဆန်းတဲ့ဟိုတယ်တစ်ခုဆီရောက်သွားပြီးတစ်ညလုံးကို အသက်ဘေးကနေလွတ်အောင်ပြေးရမဲ့ကိန်းဆီဆိုက်ရောက်လာတဲ့အခါမှာတော့....',
+                file: 'lucifer.mp4',
+                image: 'photo/Vasantha Mullai [2023].jpg'
+            },
+            'You Are Deep In My Heart (2018)': {
+                title: 'You Are Deep In My Heart (2018)',
+                genre: 'Drama, Crime',
+                description: 'ယုရှန်းဟာ အိမ်မက်တွေအပြည့်ရှိတဲ့ သူဌေးသမီးလေးဆိုပေမဲ့ သူ့အိမ်မက်တွေကိုဖခင်က အပြင်းအထန် ကန့်ကွက်တာကြောင့် အိမ်ပေါ်ကဆင်းလာပြီး သူ့ရဲ့မင်းသမီးဖြစ်လာဖို အိမ်မက်တွေကို ပုံဖော်နေတဲ့ လူငယ်တစ်ယောက်ဖြစ်ပါတယ်ကျင်ယန်ကတော့ DEမိတ်ကပ်ကုမ္ပဏီရဲ့ ဒါရိုက်တာတစ်ယောက်ဖြစ်ပြီးယုရှန်းနဲ့ ကျောင်းတုန်းက ငယ်ချစ်ဦးတွေဖြစ်ခဲ့ကြတာပါသူတို အချစ်ဦးနှစ်ယောက်ဟာ အရင်က မပေါင်းဖက်ခဲ့ရဘဲအကြောင်းအမျိုးမျိုးကြောင့်ကွဲကွာသွားခဲ့ကြရပါတယ် အခုလက်ရှိမှာတော့ယုရှန်းကို ကျင်ယန်က DEမှာ တတ်သစ်စကြော်ငြာမင်းသမီးအဖြစ်ငှားလိုက်ပါတယ်သူတိုငယ်ချစ်ဦးနှစ်ယောက် ပြန်လည်တွေ့ဆုံကြပြီး သူတိုတွေ ဘယ်လိုပြဿနာတွေကြောင့်ကွဲသွားကြတာလဲ အခုလက်ရှိအခြေအနေမှာရောပြန်လည်ပေါင်းထုပ်နိုင်ဦးမှာလား ဆိုတာကို ဆက်လက်ကြည့်ကြရင်းတချိန်က အချစ်ဦးကို တကျော့ပြန် တမ်းတလိုက်ကြရအောင်',
+                file: 'lucifer.mp4',
+                image: 'photo/You Are Deep In My Heart (2018).jpg'
+            }
+        };
+        
+        function showMovieDetails(movie) {
+            const movieData = movies[movie];
+            document.getElementById('movie-title').innerText = movieData.title;
+            document.getElementById('movie-genre').innerText = movieData.genre;
+            document.getElementById('movie-description').innerText = movieData.description;
+            document.getElementById('movie-image').setAttribute('src', movieData.image);
+            document.getElementById('download-link').setAttribute('href', movieData.file);
+            
+            document.querySelector('.movie-section').style.display = 'none';
+            document.getElementById('movieDetails').style.display = 'block';
+        }
+        
+        function hideMovieDetails() {
+            document.querySelector('.movie-section').style.display = 'block';
+            document.getElementById('movieDetails').style.display = 'none';
+        }
+
+        function searchMovies() {
+            let input = document.querySelector('.search-bar').value.toLowerCase();
+            let results = document.getElementById('search-results');
+            results.innerHTML = '';
+            results.style.display = input ? 'block' : 'none';
+            
+            for (let key in movies) {
+                if (movies[key].title.toLowerCase().includes(input)) {
+                    let div = document.createElement('div');
+                    div.classList.add('search-item');
+                    div.innerHTML = `<img src="${movies[key].image}" alt="${movies[key].title}"><p>${movies[key].title}</p>`;
+                    div.onclick = () => showMovieDetails(key);
+                    results.appendChild(div);
+                }
+            }
+        }
+        document.addEventListener('DOMContentLoaded', () => {
+  const mobileMenu = document.getElementById('mobile-menu');
+  const menu = document.querySelector('.menu');
+  const dropdown = document.querySelector('.dropdown');
+
+  // Toggle mobile menu visibility
+  mobileMenu.addEventListener('click', () => {
+    menu.classList.toggle('active');
+  });
+
+  // Toggle dropdown inside mobile menu
+  dropdown.addEventListener('click', (e) => {
+    // Prevent navigating away when tapping the Movies link
+    e.preventDefault();
+    dropdown.classList.toggle('active');
+    const dropdownContent = dropdown.querySelector('.dropdown-content');
+    dropdownContent.style.display =
+      dropdownContent.style.display === 'flex' ? 'none' : 'flex';
+  });
+});
+
+    </script>
+</body>
+</html>
