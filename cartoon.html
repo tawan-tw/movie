@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie+ App</title>
+    <link rel="stylesheet" href="styles.css">
+    <script defer src="script.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            color: black;
+            margin: 0;
+            padding: 0;
+        }
+        .header {
+            background-color: white;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .search-bar {
+            width: 80%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .search-results {
+            position: absolute;
+            background: white;
+            width: 80%;
+            max-height: 200px;
+            overflow-y: auto;
+            border: 1px solid #ccc;
+            display: none;
+            margin-top: 50%;
+        }
+        .search-item {
+            display: flex;
+            align-items: center;
+            padding: 5px;
+            cursor: pointer;
+        }
+        .search-item img {
+            width: 50px;
+            height: 50px;
+            margin-right: 10px;
+        }
+        .categories {
+            display: flex;
+            justify-content: space-around;
+            padding: 10px;
+            background-color: white;
+            border-bottom: 1px solid #ddd;
+        }
+        .categories span {
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .movie-section {
+            padding: 10px;
+        }
+        .movie-list {
+            display: flex;
+            overflow-x: scroll;
+            padding: 10px;
+        }
+        .movie-item {
+            margin: 10px;
+            text-align: center;
+            cursor: pointer;
+        }
+        .movie-item img {
+            width: 120px;
+            border-radius: 10px;
+        }
+        .movie-details {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+        .movie-details img {
+            width: 200px;
+            border-radius: 10px;
+        }
+        .download {
+            background-color: #4CAF50;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            color: white;
+            font-size: 16px;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+        .card-rating {
+      color: #ff9900;
+    }
+          /* Navbar Styling */
+.navbar {
+  background-color: #333;
+  color: #fff;
+  padding: 15px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+}
+
+.logo {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+/* Hamburger Menu Icon */
+.menu-toggle {
+  display: none;
+  flex-direction: column;
+  cursor: pointer;
+}
+
+.menu-toggle .bar {
+  height: 3px;
+  width: 25px;
+  background-color: #fff;
+  margin: 4px 0;
+  transition: 0.4s;
+}
+
+/* Main Menu */
+.menu {
+  list-style: none;
+  display: flex;
+  gap: 20px;
+}
+
+/* Mobile Menu hidden by default */
+.menu li {
+  position: relative;
+}
+
+.menu a {
+  color: #fff;
+  text-decoration: none;
+  padding: 8px 16px;
+  display: block;
+  transition: background-color 0.3s;
+}
+
+.menu a:hover {
+  background-color: #555;
+  border-radius: 4px;
+}
+
+/* Dropdown Menu */
+.dropdown-content {
+  display: none;
+  flex-direction: column;
+  background-color: #444;
+  position: static;
+  margin-top: 5px;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.dropdown-content li a {
+  padding: 10px 16px;
+  border-bottom: 1px solid #555;
+}
+
+.dropdown-content li a:last-child {
+  border-bottom: none;
+}
+
+/* Mobile Styles */
+@media (max-width: 768px) {
+  .menu-toggle {
+    display: flex;
+  }
+  
+  .menu {
+    flex-direction: column;
+    width: 100%;
+    display: none;
+    background-color: #333;
+    position: absolute;
+    top: 60px;
+    left: 0;
+  }
+  
+  .menu.active {
+    display: flex;
+  }
+  
+  .menu li {
+    width: 100%;
+  }
+  
+  .dropdown-content {
+    background-color: #555;
+  }
+  
+  .dropdown .dropbtn::after {
+    content: '\25BC'; /* Down arrow */
+    float: right;
+    margin-right: 10px;
+    transition: transform 0.3s;
+  }
+  
+  .dropdown.active .dropbtn::after {
+    transform: rotate(-180deg);
+  }
+}
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">MovieApp</div>
+        <div class="menu-toggle" id="mobile-menu">
+          <span class="bar"></span>
+          <span class="bar"></span>
+          <span class="bar"></span>
+        </div>
+        <ul class="menu">
+          <li><a href="design.html">Home</a></li>
+          <li><a href="cartoon/">cartoon</a></li>
+
+          
+          <li><a href="#account">My Account</a></li>
+          <li><a href="#subscription">Subscription</a></li>
+        </ul>
+      </nav>
+    <div class="header">
+        <input type="text" class="search-bar" placeholder="Search Movie..." onkeyup="searchMovies()">
+        <div class="search-results" id="search-results"></div>
+    </div>
+   
+    
+    <div class="movie-section">
+        <h3>Top Picks</h3>
+        <div class="movie-list">
+            <div class="movie-item" onclick="showMovieDetails('apothecary')">
+                <img src="cartoon/apothecary.jpg" alt="apothecary">
+                <p>Apothecary</p>
+                <div class="card-rating">7.3</div>
+
+            </div>
+            <div class="movie-item" onclick="showMovieDetails('epic')">
+                <img src="cartoon/epic.jpg" alt="epic">
+                <p>Epic</p>
+                <div class="card-rating">5.3</div>
+
+            </div>
+            <div class="movie-item" onclick="showMovieDetails('grave of the fireflies')">
+                <img src="cartoon/grave of the fireflies.jpg" alt="grave of the fireflies">
+                <p>Grave of the fireflies</p>
+                <div class="card-rating">6.3</div>
+
+            </div>
+            <div class="movie-item" onclick="showMovieDetails('mummies')">
+                <img src="cartoon/mummies.jpg" alt="mummies">
+                <p>Mmummies</p>
+                <div class="card-rating">8.0</div>
+
+            </div>
+            <div class="movie-item" onclick="showMovieDetails('nightdragon1')">
+                <img src="cartoon/nightdragon1.jpg" alt="nightdragon1">
+                <p>Nightdragon (1)</p>
+                <div class="card-rating">6.3</div>
+
+            </div>
+            
+            <div class="movie-item" onclick="showMovieDetails('nightdragon2')">
+                <img src="cartoon/nightdragon2.jpg" alt="nightdragon2">
+                <p>Nightdragon2</p>
+                <div class="card-rating">7.1</div>
+
+            </div>
+            <div class="movie-item" onclick="showMovieDetails('onward')">
+                <img src="cartoon/onward.jpg" alt="onward">
+                <p>Onward</p>
+                <div class="card-rating">3.2</div>
+
+            </div>
+            <div class="movie-item" onclick="showMovieDetails('spiderman')">
+                <img src="cartoon/spiderman.jpg" alt="spiderman">
+                <p>Spiderman</p>
+                <div class="card-rating">6.3</div>
+
+            </div>
+            <div class="movie-item" onclick="showMovieDetails('suzume')">
+                <img src="cartoon/suzume.jpg" alt="suzume">
+                <p>Suzume</p>
+                <div class="card-rating">6.3</div>
+
+            </div>
+            
+            
+        </div>
+    </div>
+    
+    <div class="movie-details" id="movieDetails">
+        <div>
+            <img id="movie-image" src="" alt="Movie Image">
+            <h2 id="movie-title"></h2>
+            <p id="movie-genre"></p>
+            <p id="movie-description"></p>
+            <button onclick="hideMovieDetails()" style="background-color: red;border-radius: 20px;" >&larr; Back</button>
+
+            <a id="download-link" class="download" href="#" download>Download</a>
+
+        </div>
+    </div>
+    
+    <script>
+        const movies = {
+            'apothecary': {
+                title: 'apothecary',
+                genre: 'Action, Thriller',
+                description: 'Peter Parker fights crime in New York City.',
+                file: 'spiderman.mp4',
+                image: 'cartoon/apothecary.jpg'
+            },
+            'epic': {
+                title: 'epic',
+                genre: 'Action, Sci-Fi',
+                description: 'Earth’s mightiest heroes assemble to fight threats.',
+                file: 'avengers.mp4',
+                image: 'cartoon/epic.jpg'
+            },
+            'grave of the fireflies': {
+                title: 'grave of the fireflies',
+                genre: 'Drama, Crime',
+                description: 'The devil runs a nightclub in LA and assists the LAPD.',
+                file: 'lucifer.mp4',
+                image: 'cartoon/grave of the fireflies.jpg'
+            },
+            'mummies': {
+                title: 'mummies',
+                genre: 'Action, Thriller',
+                description: 'Peter Parker fights crime in New York City.',
+                file: 'spiderman.mp4',
+                image: 'cartoon/mummies.jpg'
+            },
+            'nightdragon1': {
+                title: 'nightdragon1',
+                genre: 'Action, Sci-Fi',
+                description: 'Earth’s mightiest heroes assemble to fight threats.',
+                file: 'avengers.mp4',
+                image: 'cartoon/nightdragon1.jpg'
+            },
+            'nightdragon2': {
+                title: 'nightdragon2',
+                genre: 'Drama, Crime',
+                description: 'The devil runs a nightclub in LA and assists the LAPD.',
+                file: 'lucifer.mp4',
+                image: 'cartoon/nightdragon2.jpg'
+            },
+            'onward': {
+                title: 'onward',
+                genre: 'Action, Thriller',
+                description: 'Peter Parker fights crime in New York City.',
+                file: 'spiderman.mp4',
+                image: 'carton/onward.jpg'
+            },
+            'spiderman': {
+                title: 'spiderman',
+                genre: 'Action, Sci-Fi',
+                description: 'Earth’s mightiest heroes assemble to fight threats.',
+                file: 'avengers.mp4',
+                image: 'cartoon/spiderman.jpg'
+            },
+            'suzume': {
+                title: 'suzume',
+                genre: 'Drama, Crime',
+                description: 'The devil runs a nightclub in LA and assists the LAPD.',
+                file: 'lucifer.mp4',
+                image: 'cartoon/suzume.jpg'
+            },
+            '': {
+                title: '',
+                genre: '',
+                description: '',
+                file: '',
+                image: '.jpg'
+            }
+        };
+        
+        function showMovieDetails(movie) {
+            const movieData = movies[movie];
+            document.getElementById('movie-title').innerText = movieData.title;
+            document.getElementById('movie-genre').innerText = movieData.genre;
+            document.getElementById('movie-description').innerText = movieData.description;
+            document.getElementById('movie-image').setAttribute('src', movieData.image);
+            document.getElementById('download-link').setAttribute('href', movieData.file);
+            
+            document.querySelector('.movie-section').style.display = 'none';
+            document.getElementById('movieDetails').style.display = 'block';
+        }
+        
+        function hideMovieDetails() {
+            document.querySelector('.movie-section').style.display = 'block';
+            document.getElementById('movieDetails').style.display = 'none';
+        }
+
+        function searchMovies() {
+            let input = document.querySelector('.search-bar').value.toLowerCase();
+            let results = document.getElementById('search-results');
+            results.innerHTML = '';
+            results.style.display = input ? 'block' : 'none';
+            
+            for (let key in movies) {
+                if (movies[key].title.toLowerCase().includes(input)) {
+                    let div = document.createElement('div');
+                    div.classList.add('search-item');
+                    div.innerHTML = `<img src="${movies[key].image}" alt="${movies[key].title}"><p>${movies[key].title}</p>`;
+                    div.onclick = () => showMovieDetails(key);
+                    results.appendChild(div);
+                }
+            }
+        }
+        document.addEventListener('DOMContentLoaded', () => {
+  const mobileMenu = document.getElementById('mobile-menu');
+  const menu = document.querySelector('.menu');
+  const dropdown = document.querySelector('.dropdown');
+
+  // Toggle mobile menu visibility
+  mobileMenu.addEventListener('click', () => {
+    menu.classList.toggle('active');
+  });
+
+  // Toggle dropdown inside mobile menu
+  dropdown.addEventListener('click', (e) => {
+    // Prevent navigating away when tapping the Movies link
+    e.preventDefault();
+    dropdown.classList.toggle('active');
+    const dropdownContent = dropdown.querySelector('.dropdown-content');
+    dropdownContent.style.display =
+      dropdownContent.style.display === 'flex' ? 'none' : 'flex';
+  });
+});
+    </script>
+</body>
+</html>
